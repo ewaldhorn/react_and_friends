@@ -19,7 +19,7 @@ export const useStage = (player, resetPlayer) => {
         }
 
         setStage(prev => updateStage(prev));
-    }, []);
+    }, [player]);
 
     return [stage, setStage];
 }

@@ -32,21 +32,21 @@ const Tetris = () => {
         drop();
     }
 
-    const move = ({ keycode }) => {
+    const move = ({ keyCode }) => {
         if (!gameOver) {
-            if (keycode === 37) {
+            if (keyCode === 37) {
                 movePlayer(-1);
 
-            } else if (keycode === 39) {
+            } else if (keyCode === 39) {
                 movePlayer(1);
-            } else if (keycode === 40) {
+            } else if (keyCode === 40) {
                 dropPlayer();
             }
         }
     }
 
     return (
-        <StyledTetrisWrapper role='button' tabIndex='0' onKeyDown={event => move(event)}>
+        <StyledTetrisWrapper role='button' tabIndex='0' onKeyDown={e => move(e)}>
             <StyledTetris>
                 <Stage stage={stage} />
                 <aside>
@@ -56,7 +56,7 @@ const Tetris = () => {
                             <Display text='Rows' />
                             <Display text='Level' />
                         </div>)}
-                    <StartButton onClick={startGame}/>
+                    <StartButton callback={startGame}/>
                     <ReactVersion />
                 </aside>
             </StyledTetris>
