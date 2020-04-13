@@ -6,7 +6,7 @@ import ReactVersion from './react_version';
 import { StyledTetrisWrapper, StyledTetris } from './styles/styled_tetris';
 import { usePlayer } from '../hooks/usePlayer';
 import { useStage } from '../hooks/useStage';
-import { createStage } from '../game_helpers';
+import { createStage, checkCollision } from '../game_helpers';
 
 const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
@@ -16,16 +16,27 @@ const Tetris = () => {
     const [stage, setStage] = useStage(player, resetPlayer);
 
     const movePlayer = direction => {
-        updatePlayerPos({x: direction, y:0});
+        if (!checkCollision(player, stage, {x: direction, y: 0})) {
+            updatePlayerPos({x: direction, y:0});
+        }
     }
 
     const startGame = () => {
         setStage(createStage());
         resetPlayer();
+        setGameOver(false);
     }
 
     const drop = () => {
-        updatePlayerPos({x:0, y:1, collided: false});
+        if (!checkCollision(player, stage, {x: 0, y: 1})){
+            updatePlayerPos({x:0, y:1, collided: false});
+        } else {
+            if (player.pos.y < 1) {
+                setGameOver(true);
+                setDropTime(null);
+            }
+            updatePlayerPos({x:0, y:0, collided: true});
+        }
     }
 
     const dropPlayer = () => {
