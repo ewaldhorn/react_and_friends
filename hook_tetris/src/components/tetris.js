@@ -12,12 +12,12 @@ const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
     const [gameOver, setGameOver] = useState(false);
 
-    const [player, updatePlayerPos, resetPlayer] = usePlayer();
+    const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
     const [stage, setStage] = useStage(player, resetPlayer);
 
     const movePlayer = direction => {
-        if (!checkCollision(player, stage, {x: direction, y: 0})) {
-            updatePlayerPos({x: direction, y:0});
+        if (!checkCollision(player, stage, { x: direction, y: 0 })) {
+            updatePlayerPos({ x: direction, y: 0 });
         }
     }
 
@@ -28,14 +28,14 @@ const Tetris = () => {
     }
 
     const drop = () => {
-        if (!checkCollision(player, stage, {x: 0, y: 1})){
-            updatePlayerPos({x:0, y:1, collided: false});
+        if (!checkCollision(player, stage, { x: 0, y: 1 })) {
+            updatePlayerPos({ x: 0, y: 1, collided: false });
         } else {
             if (player.pos.y < 1) {
                 setGameOver(true);
                 setDropTime(null);
             }
-            updatePlayerPos({x:0, y:0, collided: true});
+            updatePlayerPos({ x: 0, y: 0, collided: true });
         }
     }
 
@@ -45,13 +45,14 @@ const Tetris = () => {
 
     const move = ({ keyCode }) => {
         if (!gameOver) {
-            if (keyCode === 37) {
+            if (keyCode === 37) { // left
                 movePlayer(-1);
-
-            } else if (keyCode === 39) {
+            } else if (keyCode === 39) { // right
                 movePlayer(1);
-            } else if (keyCode === 40) {
+            } else if (keyCode === 40) { // down
                 dropPlayer();
+            } else if (keyCode === 38) { // up
+                playerRotate(stage, 1);
             }
         }
     }
@@ -67,7 +68,7 @@ const Tetris = () => {
                             <Display text='Rows' />
                             <Display text='Level' />
                         </div>)}
-                    <StartButton callback={startGame}/>
+                    <StartButton callback={startGame} />
                     <ReactVersion />
                 </aside>
             </StyledTetris>
